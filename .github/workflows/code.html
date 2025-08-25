@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Викторина</title>
+    <style>
+        body { font-family: Arial; }
+        .question { margin: 20px 0; }
+        .answers { margin-top: 15px; }
+    </style>
+</head>
+<body>
+    <div id="quiz-container">
+        <div class="question" id="question-text"></div>
+        <div class="answers" id="answers-container"></div>
+        <button id="next-button" style="display:none;">Следующий вопрос</button>
+        <div id="result" style="display:none;"></div>
+    </div>
+
+    <script>
+        const questions = [
+            {
+                question: "Какая планета ближайшая к Солнцу?",
+                answers: ["Меркурий", "Венера", "Земля", "Марс"],
+                correct: 0
+            },
+            {
+                question: "Столица Австралии?",
+                answers: ["Канберра", "Сидней", "Мельбурн", "Перт"],
+                correct: 0
+            }
+            // Добавьте больше вопросов по такому же шаблону
+        ];
+
+        let currentQuestion = 0;
+        let score = 0;
+
+        function renderQuestion() {
+            const q = questions[currentQuestion];
+            document.getElementById('question-text').innerText = q.question;
+            const answersContainer = document.getElementById('answers-container');
+            answersContainer.innerHTML = '';
+            q.answers.forEach((answer, index) => {
+                const button = document.createElement('button');
+                button.innerText = answer;
+                button.addEventListener('click', () => checkAnswer(index));
+                answersContainer.appendChild(button);
+            });
+        }
+
+        function checkAnswer(selected) {
+            if (selected === questions[currentQuestion].correct) {
+                score++;
+            }
+            currentQuestion++;
+            if (currentQuestion < questions.length) {
+                renderQuestion();
+            } else {
+                showResults();
+            }
+        }
+
+        function showResults() {
+            document.getElementById('result').innerText = `Ваш результат: ${score} из ${questions.length}`;
+            document.getElementById('result').style.display = 'block';
+            document.getElementById('next-button').style.display = 'none';
+        }
+
+        renderQuestion();
+    </script>
+</body>
+</html>
